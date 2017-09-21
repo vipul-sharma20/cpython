@@ -662,6 +662,7 @@ static int _Py_TracingPossible = 0;
    per thread, now just a pair o' globals */
 int _Py_CheckInterval = 100;
 volatile int _Py_Ticker = 0; /* so that we hit a "tick" first thing */
+volatile int _Py_Ticker_Count = 0;
 
 PyObject *
 PyEval_EvalCode(PyCodeObject *co, PyObject *globals, PyObject *locals)
@@ -1090,6 +1091,7 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
                 goto fast_next_opcode;
             }
             _Py_Ticker = _Py_CheckInterval;
+            _Py_Ticker_Count++;
             tstate->tick_counter++;
 #ifdef WITH_TSC
             ticked = 1;
